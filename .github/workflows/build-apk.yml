@@ -19,20 +19,24 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y \
-            git zip unzip openjdk-17-jdk \
-            python3-pip python3-venv python3-setuptools \
-            autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev libtinfo5 \
+            git zip unzip \
+            openjdk-17-jdk \
+            python3-pip python3-setuptools python3-wheel \
+            build-essential ccache \
+            autoconf automake libtool pkg-config \
+            zlib1g-dev libncurses-dev \
             cmake libffi-dev libssl-dev
 
-      - name: Install Buildozer
+      - name: Install Python dependencies for build
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install buildozer cython==0.29.36
+          python3 -m pip install buildozer==1.5.0 cython==0.29.36
 
-      - name: Show files
+      - name: Check project files
         run: |
+          echo "Archivos del proyecto:"
           ls -la
+          echo "Contenido buildozer.spec:"
           cat buildozer.spec
 
       - name: Build APK
@@ -40,10 +44,12 @@ jobs:
           buildozer -v android debug
 
       - name: Find APK
+        if: always()
         run: |
-          find . -name "*.apk" -type f
+          find . -name "*.apk" -type f || true
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: cuidadora-bariatrica-apk
