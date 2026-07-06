@@ -39,7 +39,7 @@ jobs:
       - name: Install Python build dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install buildozer==1.5.0 cython==0.29.36
+          python3 -m pip install buildozer cython==0.29.36
 
       - name: Install Android command line tools
         run: |
@@ -68,13 +68,8 @@ jobs:
 
       - name: Check project files
         run: |
-          echo "Archivos del proyecto:"
           ls -la
-          echo "Contenido buildozer.spec:"
           cat buildozer.spec
-          echo "SDK manager:"
-          ls -la "$ANDROID_SDK_ROOT/tools/bin" || true
-          ls -la "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" || true
 
       - name: Build APK
         run: |
