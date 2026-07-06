@@ -25,7 +25,6 @@ android.ndk = 25b
 
 android.archs = arm64-v8a
 
-p4a.branch = master
 
 log_level = 2
 
