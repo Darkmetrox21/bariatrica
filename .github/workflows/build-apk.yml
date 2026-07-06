@@ -39,7 +39,7 @@ jobs:
       - name: Install Python build dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install buildozer cython==0.29.36
+          python3 -m pip install buildozer==1.5.0 cython==0.29.36
 
       - name: Install Android command line tools
         run: |
@@ -63,12 +63,20 @@ jobs:
           yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
           "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" \
             "platform-tools" \
-            "platforms;android-35" \
-            "build-tools;35.0.0"
+            "platforms;android-33" \
+            "build-tools;33.0.2"
+
+      - name: Clean old Buildozer cache
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.buildozer/android/platform/build-arm64-v8a
+          rm -rf ~/.buildozer/android/platform/build-armeabi-v7a
 
       - name: Check project files
         run: |
+          echo "Archivos del proyecto:"
           ls -la
+          echo "Contenido buildozer.spec:"
           cat buildozer.spec
 
       - name: Build APK
